@@ -1,0 +1,13 @@
+
+form([formGroup]='loginForm', (ngSubmit)='save(loginForm.value, loginForm.valid)')
+  .row
+    label Email:
+    input(type='email', formControlName='email')
+
+  .row
+    label Password:
+    input(type='password', formControlName='password')
+
+  .row
+    label
+    button(type='submit') Submit

@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "commonjs",
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "sourceRoot": "src",
+        "outDir": "build",
+        "typeRoots": ["../node_modules/@types", "typings"]
+    }
+}

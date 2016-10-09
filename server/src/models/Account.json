@@ -1,0 +1,120 @@
+{
+  "name": "Account",
+  "base": "User",
+  "options": {
+    "idInjection": false,
+    "postgresql": {
+      "table": "accounts"
+    },
+    "relations": {
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "Number",
+      "id": 1,
+      "required": false,
+      "length": null,
+      "precision": 10,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "id",
+        "dataType": "SERIAL",
+        "dataLength": null,
+        "dataPrecision": 10,
+        "dataScale": 0,
+        "nullable": "NO"
+      }
+    },
+    "email" : {
+      "type":"String",
+      "required": true,
+      "postgresql":{
+        "columnName": "email",
+        "dataType": "CITEXT",
+        "nullable": "NO"
+      }
+    },
+    "password": {
+      "type": "String",
+      "required": false,
+      "length": 1024,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "password",
+        "dataType": "varchar",
+        "dataLength": 1024,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      }
+    },
+    "created": {
+      "type": "Date",
+      "required": false,
+      "length": null,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "created",
+        "dataType": "timestamptz",
+        "dataLength": null,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      },
+      "display": {
+        "label": "Created",
+        "readonly": true
+      }
+    },
+    "verificationToken": {
+      "type": "String",
+      "required": false,
+      "length": 1024,
+      "precision": null,
+      "scale": null,
+      "postgresql": {
+        "columnName": "verificationtoken",
+        "dataType": "varchar",
+        "dataLength": 1024,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      }
+    }
+  },
+  "hidden": [
+    "password",
+    "verificationToken"
+  ],
+  "validations": [],
+  "relations": {},
+  "acls": [{
+    "accessType": "*",
+    "permission": "DENY",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "property": "*"
+  }, {
+    "accessType": "*",
+    "permission": "ALLOW",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "property": "signin"
+  }, {
+    "accessType": "*",
+    "permission": "ALLOW",
+    "principalType": "ROLE",
+    "principalId": "$authenticated",
+    "property": "logout"
+  }, {
+    "accessType": "*",
+    "permission": "ALLOW",
+    "principalType": "ROLE",
+    "principalId": "$authenticated",
+    "property": "findById"
+  }],
+  "methods": []
+}

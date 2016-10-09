@@ -1,0 +1,11 @@
+{
+  "db": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "project",
+    "username": "project_user",
+    "password": "password",
+    "name": "db",
+    "connector": "postgresql"
+  }
+}

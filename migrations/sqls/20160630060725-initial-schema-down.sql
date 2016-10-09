@@ -1,0 +1,2 @@
+DROP TABLE accounts CASCADE;
+DROP TABLE media CASCADE;

@@ -1,0 +1,35 @@
+{
+  "dev": {
+    "driver": "pg",
+    "user": "",
+    "password": "",
+    "host": "localhost",
+    "database": "",
+    "schema": "public"
+  },
+  "test": {
+    "driver": "pg",
+    "user": "",
+    "password": "",
+    "host": "localhost",
+    "database": "",
+    "schema": "public"
+  },
+  "staging": {
+    "driver": "pg",
+    "user": "",
+    "password": "",
+    "host": "",
+    "database": "",
+    "schema": "public"
+  },
+  "production": {
+    "driver": "pg",
+    "user": "",
+    "password": "",
+    "host": "",
+    "database": "",
+    "schema": "public"
+  },
+  "sql-file": true
+}
