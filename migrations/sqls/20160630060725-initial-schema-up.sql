@@ -17,7 +17,7 @@ CREATE INDEX accesstoken__userid__idx
   (userid);
 
 
-CREATE TABLE accounts(
+CREATE TABLE account(
   id serial NOT NULL,
   email CITEXT NOT NULL,
   created timestamp with time zone,
@@ -33,12 +33,12 @@ CREATE TABLE accounts(
   CONSTRAINT account_pkey PRIMARY KEY (id)
 );
 
-CREATE INDEX accounts__id__idx
+CREATE INDEX account__id__idx
   ON accounts
   USING btree
   (id);
 
-CREATE INDEX accounts__email__idx
+CREATE INDEX account__email__idx
   ON accounts
   USING btree
   (email COLLATE pg_catalog."default");

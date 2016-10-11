@@ -4,7 +4,7 @@
   "options": {
     "idInjection": false,
     "postgresql": {
-      "table": "accounts"
+      "table": "account"
     },
     "relations": {
     }
