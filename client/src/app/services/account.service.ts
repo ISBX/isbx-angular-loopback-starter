@@ -11,20 +11,23 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AccountService {
 
-  public currentUser: ReplaySubject<Account>;
+  public currentUser$: Observable<Account>;
+
+  private currentUserSource: ReplaySubject<Account>;
 
   constructor(private apiService: ApiService) {
-    this.currentUser = new ReplaySubject<Account>(1);
+    this.currentUserSource = new ReplaySubject<Account>(1);
+    this.currentUser$ = this.currentUserSource.asObservable();
   }
 
   public getMe(): Observable<Account> {
     return this.apiService.get('Accounts/me')
       .do(
         (account) => {
-          this.currentUser.next(account);
+          this.currentUserSource.next(account);
         },
         (err) => {
-          this.currentUser.next(null);
+          this.currentUserSource.next(null);
           this.apiService.setAccessToken(null);
         }
       );
@@ -35,11 +38,11 @@ export class AccountService {
     return this.apiService.post('Accounts/signin', params)
       .do(
         (account) => {
-          this.currentUser.next(account);
+          this.currentUserSource.next(account);
           this.apiService.setAccessToken(account.accessToken);
         },
         (err) => {
-          this.currentUser.next(null);
+          this.currentUserSource.next(null);
           this.apiService.setAccessToken(null);
         }
       );

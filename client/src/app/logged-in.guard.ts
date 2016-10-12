@@ -9,7 +9,7 @@ export class LoggedInGuard implements CanActivate {
   constructor(private accountService: AccountService, private router: Router) { }
 
   public canActivate(): Observable<boolean> {
-    return this.accountService.currentUser.map(user => {
+    return this.accountService.currentUser$.map(user => {
       if (!user) {
         this.router.navigate(['/login']);
       }
