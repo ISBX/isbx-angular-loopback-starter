@@ -1,6 +1,6 @@
 ## Things we use:
 
-* node 4.x - current LTS version. You may want to install via nvm if you have many projects with different requirements
+* node 6.x - current LTS version. You may want to install via nvm if you have many projects with different requirements
 * Angular 2
 * Typescript 2
 * rxjs
@@ -71,5 +71,6 @@ Then update:
 
 ## TODO:
 
+* Webpack 2
 * Set up Karma for ng2 side testing
 * add a top level common directory, primarily for sharing model interfaces between the server and the client codebase
