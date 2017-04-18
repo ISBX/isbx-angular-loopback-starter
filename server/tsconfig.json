@@ -6,6 +6,7 @@
         "sourceMap": true,
         "sourceRoot": "src",
         "outDir": "build",
-        "typeRoots": ["../node_modules/@types", "typings"]
+        "typeRoots": ["../node_modules/@types", "typings"],
+        "lib": ["es6"]
     }
 }
