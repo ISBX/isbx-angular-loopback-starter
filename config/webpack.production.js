@@ -16,18 +16,26 @@ module.exports = webpackMerge(commonConfig, {
     chunkFilename: '[id].[hash].chunk.js'
   },
 
-  htmlLoader: {
-    minimize: false // workaround for ng2
-  },
-
   plugins: [
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: { screw_ie8 : true, keep_fnames:true } }),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: { screw_ie8 : true, keep_fnames:true },
+      sourceMap: true,
+      compress: { warnings: true },
+      minimize: true
+    }),
     new ExtractTextPlugin('[name].[hash].css'),
     new webpack.DefinePlugin({
       'process.env': {
         'ENV': JSON.stringify(ENV)
+      }
+    }),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        htmlLoader: {
+          minimize: false
+        },
+        resolve: {}
       }
     })
   ]
