@@ -35,7 +35,7 @@ module.exports = {
         use: ['html-loader', 'pug-custom-loader?doctype=html']
       },
       {
-        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
+        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|otf|eot|ico)$/,
         use: 'file-loader?name=assets/[name].[hash].[ext]'
       },
       {
@@ -63,7 +63,7 @@ module.exports = {
         test: /\.styl$/,
         include: helpers.root('client', 'src', 'app'),
         use: ['css-to-string-loader', 'css-loader', 'stylus-relative-loader']
-      },
+      }
     ]
   },
 
