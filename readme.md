@@ -71,6 +71,5 @@ Then update:
 
 ## TODO:
 
-* Webpack 2
 * Set up Karma for ng2 side testing
 * add a top level common directory, primarily for sharing model interfaces between the server and the client codebase
