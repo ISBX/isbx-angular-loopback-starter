@@ -12,53 +12,57 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.ts', '.js']
+    extensions: ['.ts', '.js'],
+    unsafeCache: true
   },
 
   resolveLoader: {
-    fallback: [
-      path.resolve(__dirname, 'loaders'),
-      path.join(process.cwd(), 'node_modules')
-    ]
+    modules: [path.resolve(__dirname, 'loaders'), path.join(process.cwd(), 'node_modules')]
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.ts$/,
-        loaders: ['ts', 'angular2-template']
+        use: ['ts-loader', 'angular2-template-loader']
       },
       {
         test: /\.html$/,
-        loader: 'html'
+        use: ['html-loader']
       },
       {
         test: /\.pug$/,
-        loaders: ['html', 'pug-custom?doctype=html']
+        use: ['html-loader', 'pug-custom-loader?doctype=html']
       },
       {
-        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-        loader: 'file?name=assets/[name].[hash].[ext]'
+        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|otf|eot|ico)$/,
+        use: 'file-loader?name=assets/[name].[hash].[ext]'
       },
       {
         test: /\.css$/,
         exclude: helpers.root('client', 'src', 'app'),
-        loader: ExtractTextPlugin.extract('style', 'css')
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader'
+        })
       },
       {
         test: /\.css$/,
         include: helpers.root('client', 'src', 'app'),
-        loader: 'raw'
+        use: 'raw-loader'
       },
       {
         test: /\.styl$/,
         exclude: helpers.root('client', 'src', 'app'),
-        loader: ExtractTextPlugin.extract('style', 'css!stylus-relative')
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'stylus-relative-loader']
+        })
       },
       {
         test: /\.styl$/,
         include: helpers.root('client', 'src', 'app'),
-        loaders: ['css-to-string', 'css', 'stylus-relative']
+        use: ['css-to-string-loader', 'css-loader', 'stylus-relative-loader']
       }
     ]
   },
@@ -70,6 +74,12 @@ module.exports = {
 
     new HtmlWebpackPlugin({
       template: 'client/src/index.html'
-    })
+    }),
+
+    // https://github.com/angular/angular/issues/11580
+    new webpack.ContextReplacementPlugin(
+      /angular(\\|\/)core(\\|\/)@angular/,
+      path.join(__dirname, '')
+    )
   ]
 };
