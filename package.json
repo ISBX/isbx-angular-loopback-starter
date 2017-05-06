@@ -9,13 +9,15 @@
     "pretest": "tslint --project client/tsconfig.json && tslint --project server/tsconfig.json && npm run build",
     "test:server": "NODE_ENV=test istanbul cover node_modules/.bin/_mocha -- -u exports -R spec server/build/**/*.test.js",
     "test": "npm run test:server",
-    "build:client:development": " echo ' => building client:development' && rimraf client/dist client/build && webpack --config config/webpack.development.js --progress --bail",
-    "build:client:production": " echo ' => building client:production' && rimraf client/dist client/build && webpack --config config/webpack.production.js --progress --bail",
+    "build:client:development": " echo ' => building client:development' && rimraf client/dist && webpack --config config/webpack.development.js --progress --bail",
+    "build:client:production": " echo ' => building client:production' && rimraf client/dist && webpack --config config/webpack.production.js --progress --bail",
     "build:server": "echo ' => building server' && rimraf server/build && copyfiles -u 2 server/src/*.json server/src/**/*.json server/build && tsc -p server",
     "build": "npm run build:client:production && npm run build:server",
     "build:development": "npm run build:client:development && npm run build:server",
     "start": "node server/build/server.js",
-    "watch": "concurrently 'nodemon --watch server/build' 'nodemon --watch server/src --ext ts,json --exec npm run build:server'"
+    "watch:client": "webpack --config config/webpack.development.js --progress --colors --watch",
+    "watch:server": "nodemon --watch server/src --ext ts,json --exec 'npm run build:server && npm start'",
+    "watch": "concurrently 'npm run watch:server' 'npm run watch:client'"
   },
   "dependencies": {
     "@angular/common": "^4.0.2",
