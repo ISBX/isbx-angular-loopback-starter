@@ -1,5 +1,5 @@
 {
-  "name": "isbx-angular2-loopback-starter",
+  "name": "isbx-angular-loopback-starter",
   "version": "0.0.0",
   "main": "server/build/server.js",
   "engines": {

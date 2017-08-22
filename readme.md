@@ -1,7 +1,7 @@
 ## Things we use:
 
 * node 6.x - current LTS version. You may want to install via nvm if you have many projects with different requirements
-* Angular 2
+* Angular
 * Typescript 2
 * rxjs
 * bluebird (for Promises)
@@ -57,9 +57,9 @@ Then update:
 
 ## Directory structure:
 
-    /client     - Angular2 stuff goes in here
+    /client     - Angular stuff goes in here
       /build    - Webpack build artifacts (from npm run build)
-      /src      - your ng2 Typescript code
+      /src      - your Angular Typescript code
     /config     - Webpack configuration
     /coverage   - Istanbul coverage reports from tests
     /migrations - db-migrate consumes migrations from this directory
@@ -71,5 +71,5 @@ Then update:
 
 ## TODO:
 
-* Set up Karma for ng2 side testing
+* Set up Karma for ng side testing
 * add a top level common directory, primarily for sharing model interfaces between the server and the client codebase
