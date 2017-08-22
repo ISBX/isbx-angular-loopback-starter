@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "server/build/server.js",
   "engines": {
-    "node": "~6.9"
+    "node": "~6.11"
   },
   "scripts": {
     "pretest": "tslint --project client/tsconfig.json && tslint --project server/tsconfig.json && npm run build",
