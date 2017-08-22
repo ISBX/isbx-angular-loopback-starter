@@ -36,7 +36,7 @@
     "express": "^4.14.0",
     "lodash": "^4.13.1",
     "loopback": "^3.10.0",
-    "loopback-boot": "2.26.1",
+    "loopback-boot": "2.22.0",
     "loopback-connector-postgresql": "^3.0.0",
     "loopback-datasource-juggler": "^3.10.0",
     "reflect-metadata": "^0.1.3",
