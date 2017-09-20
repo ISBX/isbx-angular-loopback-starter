@@ -1,8 +1,11 @@
 declare module "loopback-crud" {
   export namespace db {
-    type Callback<T> = (err:Error|string, obj:T) => any;
+    type Callback<T> = (err?:Error|string, obj?:T) => any;
+    type EmptyCallback = (err?: Error) => any;
     type Options = Object;
     type Where = Object;
+    type Include = string|string[]|Object|Object[];
+    type RemoteCallback<T> = (ctx: any, res: any, next: EmptyCallback) => any;
 
     /**
      * Query filter
@@ -14,7 +17,7 @@ declare module "loopback-crud" {
       skip?: number, // Alias to offset
       fields?:string[]|Object, // Fields to be included/excluded
       order?:string|string[], // An array of order by
-      include?:string|string[]|Object|Object[] // Related models to be included
+      include?:Include // Related models to be included
     }
 
     export interface DataAccessObject<T> {
@@ -24,8 +27,8 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      create(data:T, callback:Callback<T>):any;
-      create(data:T[], callback:Callback<T[]>):any;
+      create(data:T, callback?:Callback<T>):any;
+      create(data:T[], callback?:Callback<T[]>):any;
 
       /**
        *
@@ -36,6 +39,14 @@ declare module "loopback-crud" {
       updateOrCreate(data:T, options?:Options, callback?:Callback<T|T[]>):any;
       patchOrCreate(data:T, options?:Options, callback?:Callback<T|T[]>):any;
       upsert(data:T, options?:Options, callback?:Callback<T|T[]>):any;
+
+      /**
+       *
+       * @param where
+       * @param data
+       * @param callback
+       */
+      upsertWithWhere(where:T, data:T, callback?:Callback<T|T[]>):any;
 
       /**
        *
@@ -147,7 +158,42 @@ declare module "loopback-crud" {
       removeAll(where?:Where, options?:Options, callback?:Callback<number>):any;
       destroyAll(where?:Where, options?:Options, callback?:Callback<number>):any;
 
-      remoteMethod(functionName:string, config:Object);
+      /**
+       *
+       * @param methodName
+       * @param config
+       */
+      remoteMethod(methodName:string, config:Object):any;
+
+      /**
+       *
+       * @param methodName
+       * @param isStatic
+       */
+      disableRemoteMethod(methodName:string, isStatic:boolean):any;
+
+      /**
+       *
+       * @param methodName
+       * @param callback
+       */
+      afterRemote(methodName: string, callback?: RemoteCallback<T>): any;
+
+      /**
+       *
+       * @param name
+       * @param callback
+       */
+      observe(name:string, callback?:(ctx:any, next:EmptyCallback) => any):Promise<any>;
+
+      /**
+       *
+       * @param name
+       * @param listener
+       */
+      on(name:string, listener:Function);
+
+      app:any;
     }
 
     /**
@@ -169,6 +215,7 @@ declare module "loopback-crud" {
       remove(options?:Options, callback?:Callback<T>):any;
       delete(options?:Options, callback?:Callback<T>):any;
       destroy(options?:Options, callback?:Callback<T>):any;
+
 
       /**
        *
