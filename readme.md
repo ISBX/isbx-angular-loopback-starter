@@ -1,15 +1,16 @@
 ## Things we use:
 
-* node 6.x - current LTS version. You may want to install via nvm if you have many projects with different requirements
-* Angular 2
-* Typescript 2
-* rxjs
-* bluebird (for Promises)
-* db-migrate - I prefer to have the schema versioned together with the code, and I prefer the sql mode enabled.
-* jade/pug
-* stylus
-* webpack
-* EditorConfig
+* [node](https://nodejs.org/) 6.x - current LTS version. You may want to install via nvm if you have many projects with different requirements
+* [Angular](https://angular.io/)
+* [LoopBack](http://loopback.io/)
+* [Typescript](https://www.typescriptlang.org/) 2
+* [RxJS](https://github.com/reactivex/rxjs)
+* [bluebird](http://bluebirdjs.com/) (for Promises)
+* [db-migrate](https://github.com/db-migrate/node-db-migrate) - I prefer to have the schema versioned together with the code, and I prefer the sql mode enabled.
+* [jade/pug](https://pugjs.org/api/getting-started.html)
+* [stylus](http://stylus-lang.com/)
+* [webpack](https://webpack.github.io/) 1
+* [EditorConfig](http://editorconfig.org/)
 
 ## Style guides:
 * https://github.com/johnpapa/angular-styleguide
@@ -46,21 +47,21 @@ Then update:
 
 * npm run build - builds production version of client (slower to build) and then builds server
 * npm run build:development - builds development version of client and then server
-* npm run buid:server - only build server
+* npm run build:server - only build server
 
 * npm run test - runs pretests (linters) and then runs the server tests (clients tests coming)
 * npm run test:server - just runs the server tests
 
-* npm start - runs the server, needs to be built prior. In development, server will watch for client changes and rebuild. So you do not need to build the client before starting the server.
-* npm run watch - watches the server - rebuilds, restarts the server as necessary. And since the server also watches the client while in development, most of the time you can just run this.
+* npm start - runs the server, needs to be built prior. The server no longer watches in development, so the client needs to be indepedently built.
+* npm run watch - concurrently watches the server and the client - rebuilds, restarts the server as necessary. Most of the time you can just run this.
 
 
 ## Directory structure:
 
-    /client     - Angular2 stuff goes in here
-      /build    - Webpack build artifacts (from npm run build)
-      /src      - your ng2 Typescript code
-    /config     - Webpack configuration
+    /client     - Angular stuff goes in here
+      /build    - webpack build artifacts (from npm run build)
+      /src      - your Angular Typescript code
+    /config     - webpack configuration
     /coverage   - Istanbul coverage reports from tests
     /migrations - db-migrate consumes migrations from this directory
     /node_modules
@@ -71,5 +72,5 @@ Then update:
 
 ## TODO:
 
-* Set up Karma for ng2 side testing
+* Set up Karma for ng side testing
 * add a top level common directory, primarily for sharing model interfaces between the server and the client codebase

@@ -1,4 +1,4 @@
-// Angular 2
+// Angular
 import '@angular/common';
 import '@angular/core';
 import '@angular/http';

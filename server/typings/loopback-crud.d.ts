@@ -189,10 +189,16 @@ declare module "loopback-crud" {
       /**
        *
        * @param name
+       * @param callback
+       */
+      observe(name:string, callback?:(ctx:any, next:EmptyCallback) => any):Promise<any>;
+
+      /**
+       *
+       * @param name
        * @param listener
        */
       on(name:string, listener:Function);
-      beginTransaction: any;
       app:any;
     }
 
