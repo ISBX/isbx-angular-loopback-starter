@@ -1,5 +1,6 @@
 CREATE TABLE accesstoken(
   id character varying(1024) NOT NULL,
+  scopes character varying(1024),
   ttl integer,
   created timestamp with time zone,
   userid integer,
