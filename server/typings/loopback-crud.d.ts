@@ -28,9 +28,8 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      create(data:T, callback?:Callback<Instance<T>>): Promise<Instance<T>>;
-      create(data:T[], callback?:Callback<Instance<T>[]>):Promise<Instance<T>[]>;
-
+      create(data:T, options?: Options, callback?:Callback<Instance<T>>): Promise<Instance<T>>;
+      create(data:T[], options?: Options, callback?:Callback<Instance<T>[]>):Promise<Instance<T>[]>;
       /**
        *
        * @param data
@@ -190,10 +189,16 @@ declare module "loopback-crud" {
       /**
        *
        * @param name
+       * @param callback
+       */
+      observe(name:string, callback?:(ctx:any, next:EmptyCallback) => any):Promise<any>;
+
+      /**
+       *
+       * @param name
        * @param listener
        */
       on(name:string, listener:Function);
-
       app:any;
     }
 
@@ -224,6 +229,7 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
+      updateAttribute(attribute: string, options?:Options, callback?:Callback<T>):any;
       updateAttributes(data:T|Object, options?:Options, callback?:Callback<T>):any;
       patchAttributes(data:T|Object, options?:Options, callback?:Callback<T>):any;
 
@@ -234,6 +240,15 @@ declare module "loopback-crud" {
        * @param callback
        */
       replaceAttributes(data:T|Object, options?:Options, callback?:Callback<T>):any;
+
+      /**
+       * Create a new database transaction
+       * @param type isolation level of the transaction
+       * @returns transaction instance
+       */
+      beginTransaction(type: string): any;
+
+      toObject();
     }
   }
 }
