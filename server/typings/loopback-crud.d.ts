@@ -6,6 +6,7 @@ declare module "loopback-crud" {
     type Where = Object;
     type Include = string|string[]|Object|Object[];
     type RemoteCallback<T> = (ctx: any, res: any, next: EmptyCallback) => any;
+    type Instance<T> = DataObject<T> & T;
 
     /**
      * Query filter
@@ -27,8 +28,8 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      create(data:T, callback?:Callback<T>):any;
-      create(data:T[], callback?:Callback<T[]>):any;
+      create(data:T, callback?:Callback<Instance<T>>): Promise<Instance<T>>;
+      create(data:T[], callback?:Callback<Instance<T>[]>):Promise<Instance<T>[]>;
 
       /**
        *
@@ -36,9 +37,9 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      updateOrCreate(data:T, options?:Options, callback?:Callback<T|T[]>):any;
-      patchOrCreate(data:T, options?:Options, callback?:Callback<T|T[]>):any;
-      upsert(data:T, options?:Options, callback?:Callback<T|T[]>):any;
+      updateOrCreate(data:T, options?:Options, callback?:Callback<Instance<T>|Instance<T>[]>):any;
+      patchOrCreate(data:T, options?:Options, callback?:Callback<Instance<T>|Instance<T>[]>):any;
+      upsert(data:T, options?:Options, callback?:Callback<Instance<T>|Instance<T>[]>): any;
 
       /**
        *
@@ -46,7 +47,7 @@ declare module "loopback-crud" {
        * @param data
        * @param callback
        */
-      upsertWithWhere(where:T, data:T, callback?:Callback<T|T[]>):any;
+      upsertWithWhere(where:T, data:T, callback?:Callback<Instance<T>|Instance<T>[]>):any;
 
       /**
        *
@@ -55,7 +56,7 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      findOrCreate(filter:Filter, data:T, options?:Options, callback?:Callback<T[]>):any;
+      findOrCreate(filter:Filter, data:T, options?:Options, callback?:Callback<Instance<T>[]>):any;
 
       /**
        *
@@ -63,7 +64,7 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      replaceOrCreate(data:T|T[], options?:Options, callback?:Callback<T|T[]>):any;
+      replaceOrCreate(data:T|T[], options?:Options, callback?:Callback<Instance<T>|Instance<T>[]>):any;
 
       /**
        *
@@ -71,7 +72,7 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      find(filter?:Filter, options?:Options, callback?:Callback<T[]>):any;
+      find(filter?:Filter, options?:Options, callback?:Callback<Instance<T>[]>): Promise<Instance<T>[]>;
 
       /**
        *
@@ -80,7 +81,7 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      findById(id:any, filter?:Filter, options?:Options, callback?:Callback<T>):any;
+      findById(id:any, filter?:Filter, options?:Options, callback?:Callback<Instance<T>>): Promise<Instance<T>>;
 
       /**
        *
@@ -89,7 +90,7 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      findByIds(id:any[], filter?:Filter, options?:Options, callback?:Callback<T[]>):any;
+      findByIds(id:any[], filter?:Filter, options?:Options, callback?:Callback<Instance<T>[]>): Promise<Instance<T>>;
 
       /**
        *
@@ -97,8 +98,8 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      findOne(filter?:Filter, options?:Options, callback?:Callback<T>):any;
-      findOne(filter:Filter, callback:Callback<T>):any;
+      findOne(filter?:Filter, options?:Options, callback?:Callback<Instance<T>>): Promise<Instance<T>>;
+      findOne(filter:Filter, callback:Callback<Instance<T>>): Promise<Instance<T>>;
 
       /**
        *
@@ -106,18 +107,9 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      deleteById(id:any, options?:Options, callback?:Callback<number>):any;
-      removeById(id:any, options?:Options, callback?:Callback<number>):any;
-      destroyById(id:any, options?:Options, callback?:Callback<number>):any;
-
-      /**
-       *
-       * @param id
-       * @param data
-       * @param options
-       * @param callback
-       */
-      updateById(id:any, data:T|Object, options?:Options, callback?:Callback<T>):any;
+      deleteById(id:any, options?:Options, callback?:Callback<number>): Promise<number>;
+      removeById(id:any, options?:Options, callback?:Callback<number>): Promise<number>;
+      destroyById(id:any, options?:Options, callback?:Callback<number>): Promise<number>;
 
       /**
        *
@@ -126,7 +118,16 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      replaceById(id:any, data:T|Object, options?:Options, callback?:Callback<T>):any;
+      updateById(id:any, data:T|Object, options?:Options, callback?:Callback<Instance<T>>): Promise<Instance<T>>;
+
+      /**
+       *
+       * @param id
+       * @param data
+       * @param options
+       * @param callback
+       */
+      replaceById(id:any, data:T|Object, options?:Options, callback?:Callback<Instance<T>>): Promise<Instance<T>>;
 
       /**
        *
@@ -134,7 +135,7 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      count(where?:Where, options?:Options, callback?:Callback<number>):any;
+      count(where?:Where, options?:Options, callback?:Callback<number>): Promise<number>;
 
       /**
        *
@@ -154,9 +155,9 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      remove(where?:Where, options?:Options, callback?:Callback<number>):any;
-      removeAll(where?:Where, options?:Options, callback?:Callback<number>):any;
-      destroyAll(where?:Where, options?:Options, callback?:Callback<number>):any;
+      remove(where?:Where, options?:Options, callback?:Callback<number>): Promise<number>;
+      removeAll(where?:Where, options?:Options, callback?:Callback<number>): Promise<number>;
+      destroyAll(where?:Where, options?:Options, callback?:Callback<number>): Promise<number>;
 
       /**
        *
@@ -205,7 +206,7 @@ declare module "loopback-crud" {
        * @param options
        * @param callback
        */
-      save(options?:Options, callback?:Callback<T>):any;
+      save(options?:Options, callback?:Callback<Instance<T>>): Promise<Instance<T>>;
 
       /**
        *
