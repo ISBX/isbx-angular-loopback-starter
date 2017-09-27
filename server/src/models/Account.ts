@@ -10,7 +10,8 @@ interface AccountInstance {
   email: string;
   created: Date;
 
-  emailVerified: boolean;  verify(options: any, callback);
+  emailVerified: boolean;
+  verify(options: any);
 }
 
 interface AccountModel extends db.DataAccessObject<AccountInstance> {
@@ -18,11 +19,11 @@ interface AccountModel extends db.DataAccessObject<AccountInstance> {
   defaultIncludes: any;
 
   // 'Class' methods
-  signin(userInfo, callback);
-  signup(userInfo, callback);
-  login(userInfo, callback);
+  signin(userInfo);
+  signup(userInfo);
+  login(userInfo);
 
-  checkEmail(email: string, callback);
+  checkEmail(email: string);
 }
 
 /* tslint:disable */
@@ -33,34 +34,22 @@ export = (Account: AccountModel) => {
 
   Account.defaultIncludes = [];
 
-  Account.signin = (userInfo, callback) => {
+  Account.signin = async (userInfo): Promise<any> => {
     userInfo.ttl = userInfo.ttl || 31556926; // 1-year
-    Account.login(userInfo, (error, accessToken) => {
-
-      const processResponse = (accountData, accessTokenData) => {
-        Account.findById(accountData.id, (err, response) => {
-          if (err) { return callback(err); }
-
-          response.accessToken = accessTokenData.id;
-          response.accessTokenTTL = accessTokenData.ttl;
-          response.accessTokenCreated = accessTokenData.created;
-          return callback(null, response);
-        });
+    const accessToken = await Account.login(userInfo);
+    if (accessToken && accessToken.id && accessToken.userId) {
+      const filter = {
+        include: Account.defaultIncludes,
+        where: { id: accessToken.userId }
       };
-
-      if (accessToken && accessToken.id && accessToken.userId) {
-        const filter = {
-          include: Account.defaultIncludes,
-          where: { id: accessToken.userId }
-        };
-        Account.findOne(filter, (err, account) => {
-          if (err) { return callback(err); }
-          return processResponse(account, accessToken);
-        });
-      } else {
-        callback(error, accessToken);
-      }
-    });
+      const account = await Account.findOne(filter);
+      const response: any = account;
+      response.accessToken = accessToken.id;
+      response.accessTokenTTL = accessToken.ttl;
+      response.accessTokenCreated = accessToken.created;
+      return response;
+    }
+    throw Errors.makeError('ERROR_LOGIN_FAILED');
   };
 
   Account.remoteMethod('signin', {
@@ -70,42 +59,34 @@ export = (Account: AccountModel) => {
     description: 'login user'
   });
 
-  Account.signup = (userInfo: AccountInstance, callback) => {
-    Account.checkEmail(userInfo.email, (err, account) => {
-      if (err) { return callback(err, null); }
-      if (account) {
-        return callback(Errors.makeError('ERROR_EMAIL_EXISTS'));
-      }
+  Account.signup = async (userInfo: AccountInstance) => {
+    const testAccount = await Account.checkEmail(userInfo.email);
+    if (testAccount) {
+      throw Errors.makeError('ERROR_EMAIL_EXISTS');
+    }
 
-      userInfo.username = userInfo.email;
-      userInfo.created = new Date();
-      userInfo.emailVerified = false;
+    userInfo.username = userInfo.email;
+    userInfo.created = new Date();
+    userInfo.emailVerified = false;
 
-      Account.create(userInfo, (err, account) => {
-        if (err) { return callback(err, null); }
+    const account = await Account.create(userInfo);
+    const options = {
+      name: account.firstname,
+      currentYear: new Date().getFullYear(),
+      type: 'email',
+      to: account.email,
+      from: app.get('email'),
+      subject: 'Account Confirmation',
+      template: path.resolve(`${__dirname}/../../files/email_forms/activation_email.html`),
+      account
+    };
 
-        const options = {
-          name: account.firstname,
-          currentYear: new Date().getFullYear(),
-          type: 'email',
-          to: account.email,
-          from: app.get('email'),
-          subject: 'Account Confirmation',
-          template: path.resolve(`${__dirname}/../../files/email_forms/activation_email.html`),
-          account
-        };
+    // Don't send email if using test env
+    if (env === 'test') {
+      return;
+    }
 
-        // Don't send email if using test env
-        if (env === 'test') {
-          return callback(err, null);
-        }
-
-        account.verify(options, (err, res) => {
-          if (err) { return callback(err); }
-          callback(err, {});
-        });
-      });
-    });
+    return await account.verify(options);
   };
 
   Account.remoteMethod('signup', {
@@ -116,15 +97,15 @@ export = (Account: AccountModel) => {
   });
 
   // returns true if email not exists, else return error.
-  Account.checkEmail = (email, callback) => {
+  Account.checkEmail = async (email) => {
     /* tslint:disable */
     const regEx = /^(([^<>()[\]\\.,;:\s@\']+(\.[^<>()[\]\\.,;:\s@\']+)*)|(\'.+\'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     /* tslint:enable */
 
     if (!regEx.test(email)) {
-      return callback(Errors.makeError('ERROR_EMAIL_INVALID'));
+      throw Errors.makeError('ERROR_EMAIL_INVALID');
     }
 
-    Account.findOne({ where: { email } }, callback);
+    return await Account.findOne({ where: { email } });
   };
 };
