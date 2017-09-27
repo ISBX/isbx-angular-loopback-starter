@@ -81,6 +81,7 @@ declare module "loopback-crud" {
        * @param callback
        */
       findById(id:any, filter?:Filter, options?:Options, callback?:Callback<Instance<T>>): Promise<Instance<T>>;
+      findById(id:any, callback?:Callback<Instance<T>>): Promise<Instance<T>>;
 
       /**
        *
