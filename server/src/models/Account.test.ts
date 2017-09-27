@@ -72,11 +72,10 @@ describe('Account', () => {
   });
 
   describe('#logout', () => {
-    it('ACL - should not allow $everyone to attempt to logout -- current behavior is a bug', done => {
-      // TODO current behavior is a bug, something in User model is taking precedence on this ACL
+    it('ACL - should not allow $everyone to attempt to logout', done => {
       server
         .post('/api/Accounts/logout')
-        .expect(500)
+        .expect(401)
         .end((err, res) => {
           done(err);
         });
