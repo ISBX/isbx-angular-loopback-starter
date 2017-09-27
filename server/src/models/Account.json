@@ -14,15 +14,9 @@
       "type": "Number",
       "id": 1,
       "required": false,
-      "length": null,
-      "precision": 10,
-      "scale": 0,
       "postgresql": {
         "columnName": "id",
         "dataType": "SERIAL",
-        "dataLength": null,
-        "dataPrecision": 10,
-        "dataScale": 0,
         "nullable": "NO"
       }
     },
