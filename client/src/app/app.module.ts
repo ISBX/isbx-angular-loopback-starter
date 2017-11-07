@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -30,7 +30,8 @@ import { LoggedInGuard } from './logged-in.guard';
     AccountService,
     ApiService,
     ConfigService,
-    LoggedInGuard
+    LoggedInGuard,
+    Title
   ],
   bootstrap: [ AppComponent ]
 })
