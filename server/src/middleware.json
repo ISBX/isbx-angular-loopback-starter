@@ -4,6 +4,7 @@
   },
   "initial": {
     "compression": {},
+    "helmet": {},
     "./middleware/version": {}
   },
   "session": {
